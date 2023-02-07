@@ -4,6 +4,7 @@ import NextAuth, { Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import KakaoProvider from "next-auth/providers/kakao";
+import GoogleProvider from "next-auth/providers/google";
 import NaverProvider from "next-auth/providers/naver";
 interface TokenType extends JWT {
     user?: User;
@@ -30,11 +31,6 @@ export default NextAuth({
         },
     },
     adapter: PrismaAdapter(client),
-    pages: {
-        signIn: "/auth/enter",
-        signOut: "/auth/enter",
-        error: "/auth/enter",
-    },
     providers: [
         // GithubProvider({
         //     clientId: process.env.GITHUB_ID!,
@@ -44,14 +40,15 @@ export default NextAuth({
             clientId: process.env.KAKAO_CLIENT_ID!,
             clientSecret: process.env.KAKAO_CLIENT_SECRET!,
         }),
+        // GoogleProvider({
+        //     clientId: process.env.GOOGLE_CLIENT_ID!,
+        //     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        // }),
         // NaverProvider({
         //     clientId: process.env.NAVER_CLIENT_ID!,
         //     clientSecret: process.env.NAVER_CLIENT_SECRET!,
         // }),
         // ...add more providers here
     ],
-    session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60,
-    },
+    secret: process.env.AUTH_SECRET,
 });
