@@ -17,18 +17,20 @@ interface SessionType {
 }
 export default NextAuth({
     callbacks: {
-        async jwt({ token, user, account }) {
-            if (user) {
-                token.user = { id: user.id };
-            }
-            return token;
+        session({ session, token, user }) {
+            return session; // The return type will match the one returned in `useSession()`
         },
-        async session({ session, token, user }: SessionType) {
-            if (token.user) {
-                session.user = token.user;
-            }
-            return session;
-        },
+    },
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        updateAge: 24 * 60 * 60, // 24 hours
+    },
+    jwt: {
+        secret: process.env.AUTH_SECRET,
+    },
+    pages: {
+        signIn: "/", // 로그인 페이지
     },
     adapter: PrismaAdapter(client),
     providers: [
@@ -50,5 +52,4 @@ export default NextAuth({
         // }),
         // ...add more providers here
     ],
-    secret: process.env.AUTH_SECRET,
 });
