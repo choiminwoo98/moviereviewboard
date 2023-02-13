@@ -9,17 +9,12 @@ export default function Header() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [modal, setModal] = useState(false);
-    const onClick = () => {
-        signOut({ redirect: false }).then(() => {
-            signIn("kakao", {
-                redirect: false,
-            });
-        });
-    };
     const convertModal = () => {
         setModal((prev) => !prev);
     };
-
+    const onSignOut = () => {
+        signOut({ redirect: false });
+    };
     return (
         <div className="border-b-[2px] shadow-sm fixed w-full h-14 flex justify-center bg-white z-[99] items-center">
             <div className="w-full max-w-6xl px-5 md:px-8 flex justify-between  items-center">
@@ -32,18 +27,22 @@ export default function Header() {
                                 <div className="relative cursor-pointer  w-10 aspect-square rounded-full overflow-hidden shadow-md">
                                     <Image
                                         src={session.user.image}
-                                        alt={"kakao"}
+                                        alt={"avatar"}
                                         fill
                                         onClick={convertModal}
                                     />
                                 </div>
-                                {modal && <Imagemodal />}
+                                {modal && <Imagemodal logout={onSignOut} />}
                             </div>
                         </>
                     ) : (
                         <>
-                            <button onClick={onClick}>로그인</button>
-                            <button onClick={() => router.push("/register")}>
+                            <button onClick={() => router.push("/auth/login")}>
+                                로그인
+                            </button>
+                            <button
+                                onClick={() => router.push("/auth/register")}
+                            >
                                 회원가입
                             </button>
                         </>

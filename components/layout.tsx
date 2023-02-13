@@ -1,12 +1,16 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Header from "./header";
 
 interface LayoutProps {
     title: string;
     seoTitle: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 export default function Layout({ title, seoTitle, children }: LayoutProps) {
+    const { data: session, status } = useSession();
+    const router = useRouter();
     return (
         <div className="w-screen min-h-screen grid grid-cols-1 bg-gray-50">
             <Head>
