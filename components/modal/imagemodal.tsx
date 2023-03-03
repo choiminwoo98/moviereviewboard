@@ -11,7 +11,7 @@ export default function Imagemodal({ logout }: ModalProps) {
                 <div className="w-40 py-2 flex flex-col bg-white shadow-md rounded-md">
                     <div
                         className="h-12 flex items-center pl-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => router.push("/")}
+                        onClick={() => router.push("/my")}
                     >
                         마이페이지
                     </div>

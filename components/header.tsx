@@ -18,7 +18,12 @@ export default function Header() {
     return (
         <div className="border-b-[2px] shadow-sm fixed w-full h-14 flex justify-center bg-white z-[99] items-center">
             <div className="w-full max-w-6xl px-5 md:px-8 flex justify-between  items-center">
-                <div>logo</div>
+                <div
+                    className="cursor-pointer"
+                    onClick={() => router.push("/")}
+                >
+                    logo
+                </div>
                 <div className="flex items-center space-x-2">
                     {session ? (
                         <>

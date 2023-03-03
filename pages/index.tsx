@@ -1,44 +1,29 @@
 import { NextPage } from "next";
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Layout from "@/components/layout";
-interface genre {
-    id: number;
-}
-interface MovieProps {
-    id: number;
-    title: string;
-    overview: string;
-    vote_average: number;
-    poster_path: string;
-    genre_ids: genre[];
-}
+import { useDispatch, useSelector } from "react-redux";
+import * as counterActions from "../store/modules/counter";
+import { RootState } from "../store";
+import { addMovies, getAllMovies } from "@/store/modules/movieslice";
+import Movie from "@/components/movie";
+import { decrement, increment } from "../store/modules/counter";
+import { MovieProps } from "@/store/modules/movieslice";
 interface HomeProps {
     popularMovie: MovieProps[];
     topRatedMovie: MovieProps[];
 }
 const Home: NextPage<HomeProps> = ({ popularMovie, topRatedMovie }) => {
-    console.log(popularMovie);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(addMovies(popularMovie));
+    }, [dispatch, popularMovie]);
+
     return (
         <Layout title={"홈"} seoTitle={"홈"}>
-            <>
-                {popularMovie.map((movie) => {
-                    return (
-                        <>
-                            <div key={movie.id} className="flex justify-center">
-                                <h1 className="">{movie.title}</h1>
-                                <div className="w-60 h-60">
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                                        alt={movie.poster_path}
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    );
-                })}
-            </>
+            <Movie />
         </Layout>
     );
 };
